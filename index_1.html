@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ab2dy | الملف الشخصي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* =========================================================
+   الألوان
+   ========================================================= */
+:root{
+  --bg:#121419;
+  --bg2:#191c23;
+  --card:rgba(255,255,255,.035);
+  --card-h:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.08);
+  --green:#5be34a;
+  --green2:#a6ff8f;
+  --silver:#c3c7d0;
+  --text:#eceef2;
+  --muted:#8a8f9c;
+  --live:#ff3b5c;
+  --r:20px;
+  --en:'Space Grotesk',sans-serif;
+  --ar:'IBM Plex Sans Arabic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html,body{background:var(--bg);color:var(--text);font-family:var(--ar);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--green);color:#0b0d10}
+
+/* ===== الخلفية الحديثة ===== */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
+.bg .b1{width:520px;height:520px;background:radial-gradient(circle,rgba(91,227,74,.55),transparent 65%);top:-160px;right:-120px;animation:float1 22s ease-in-out infinite}
+.bg .b2{width:600px;height:600px;background:radial-gradient(circle,rgba(195,199,208,.28),transparent 65%);bottom:-220px;left:-180px;animation:float2 26s ease-in-out infinite}
+.bg .b3{width:380px;height:380px;background:radial-gradient(circle,rgba(91,227,74,.3),transparent 65%);top:45%;left:40%;animation:float3 30s ease-in-out infinite}
+@keyframes float1{50%{transform:translate(-140px,120px) scale(1.15)}}
+@keyframes float2{50%{transform:translate(160px,-110px) scale(1.1)}}
+@keyframes float3{50%{transform:translate(-120px,-90px) scale(.85)}}
+.bg .grid{position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);background-size:28px 28px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%);
+          mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,#000 20%,transparent 75%)}
+.bg .noise{position:absolute;inset:0;opacity:.05;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#spot{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(500px circle at var(--mx,50%) var(--my,30%),rgba(91,227,74,.07),transparent 60%)}
+
+/* ===== شاشة البداية CODING </> ===== */
+#intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;
+  transition:opacity .9s ease, visibility .9s, transform .9s ease}
+#intro.hide{opacity:0;visibility:hidden;transform:scale(1.04)}
+.intro-wrap{display:flex;flex-direction:column;align-items:center;gap:26px}
+#intro-text{direction:ltr;font-family:var(--en);font-weight:700;font-size:clamp(44px,10vw,110px);letter-spacing:-2px;display:flex}
+#intro-text span{display:inline-block;opacity:0;transform:translateY(40px) rotateX(-70deg);filter:blur(10px);
+  animation:letter .8s cubic-bezier(.2,.8,.2,1) forwards;
+  background:linear-gradient(180deg,#fff 20%,var(--silver));-webkit-background-clip:text;background-clip:text;color:transparent}
+#intro-text span.g{background:linear-gradient(180deg,var(--green2),var(--green));-webkit-background-clip:text;background-clip:text}
+#intro-text span.sp{width:.3em}
+@keyframes letter{to{opacity:1;transform:none;filter:none}}
+.intro-line{width:min(260px,60vw);height:2px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+.intro-line i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--green2));animation:load 2.6s cubic-bezier(.6,0,.2,1) .2s forwards}
+@keyframes load{to{width:100%}}
+
+/* ===== شريط البث المباشر ===== */
+#live-bar{display:none;align-items:center;justify-content:center;gap:10px;margin:0 auto 10px;width:fit-content;max-width:calc(100% - 32px);
+  padding:7px 8px 7px 16px;border-radius:40px;background:rgba(255,59,92,.14);border:1px solid rgba(255,59,92,.4);
+  color:#ffd5dc;font-weight:600;font-size:14px;backdrop-filter:blur(12px)}
+#live-bar.on{display:flex}
+#live-bar .dot{width:9px;height:9px;border-radius:50%;background:var(--live);animation:pulse 1.4s infinite}
+#live-bar a{background:var(--live);color:#fff;padding:4px 14px;border-radius:30px;font-size:12px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,92,.7)}100%{box-shadow:0 0 0 10px rgba(255,59,92,0)}}
+
+/* ===== الناف بار العائم ===== */
+header{position:sticky;top:0;z-index:50;padding:16px 16px 0;opacity:0;transform:translateY(-20px);transition:opacity .8s .2s, transform .8s .2s}
+header.show{opacity:1;transform:none}
+.nav{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:8px 8px 8px 18px;direction:ltr;
+  background:rgba(25,28,35,.6);border:1px solid var(--border);border-radius:60px;backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:0 10px 40px rgba(0,0,0,.35);position:relative}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand .logo{width:38px;height:38px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:var(--bg2);border:1px solid var(--border);font-family:var(--en);font-weight:700;color:var(--green)}
+.brand .logo img{width:100%;height:100%;object-fit:cover}
+.brand b{font-family:var(--en);font-weight:700;font-size:18px;letter-spacing:-.3px}
+.links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.links a{position:relative;padding:10px 16px;border-radius:40px;font-family:var(--en);font-size:14px;font-weight:500;
+  color:var(--muted);transition:color .25s, background .25s;white-space:nowrap}
+.links a:hover{color:var(--text)}
+.links a.active{color:#0e1013;background:linear-gradient(135deg,var(--green2),var(--green));box-shadow:0 4px 18px rgba(91,227,74,.35)}
+.links .ldot{display:none;width:7px;height:7px;border-radius:50%;background:var(--live);margin-right:7px;vertical-align:1px;animation:pulse 1.4s infinite}
+body.is-live .links .ldot{display:inline-block}
+.burger{display:none;margin-left:auto;width:42px;height:42px;border-radius:50%;background:var(--card-h);font-size:16px}
+
+/* ===== الصفحات ===== */
+main{position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:0 16px 40px;opacity:0;transition:opacity .8s .3s}
+main.show{opacity:1}
+.page{display:none}
+.page.active{display:block}
+.page.active .rv{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.page.active .rv:nth-child(2){animation-delay:.06s}.page.active .rv:nth-child(3){animation-delay:.12s}
+.page.active .rv:nth-child(4){animation-delay:.18s}.page.active .rv:nth-child(5){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* رأس كل صفحة */
+.page-head{display:flex;flex-direction:column;align-items:center;text-align:center;padding:64px 0 40px;gap:14px}
+.page-head .icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:22px;color:var(--green);
+  background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08)}
+.page-head .tag{font-family:var(--en);font-size:12px;letter-spacing:4px;color:var(--muted);direction:ltr;text-transform:uppercase}
+.page-head .tag:empty{display:none}
+.page-head h1{font-family:var(--en);font-weight:700;font-size:clamp(42px,9vw,80px);letter-spacing:-2px;direction:ltr;line-height:1;
+  background:linear-gradient(180deg,#fff 30%,#8d929e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.page-head h1 em{font-style:normal;background:linear-gradient(135deg,var(--green2),var(--green));-webkit-background-clip:text;background-clip:text}
+.page-head p{color:var(--muted);font-size:16px;max-width:520px;line-height:1.8}
+
+/* الكروت */
+.card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  backdrop-filter:blur(14px);transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, background .35s;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;
+  background:radial-gradient(260px circle at var(--x,50%) var(--y,50%),rgba(91,227,74,.13),transparent 60%)}
+a.card:hover,.card.hover:hover{transform:translateY(-4px);border-color:rgba(91,227,74,.35);background:var(--card-h)}
+.card:hover::before{opacity:1}
+
+/* الرئيسية */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:72px 0 10px;gap:14px}
+.avatar{position:relative;width:148px;height:148px;margin-bottom:8px}
+.avatar::before{content:'';position:absolute;inset:-6px;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--green),transparent 30%,var(--silver) 50%,transparent 75%,var(--green));
+  animation:spin 5s linear infinite;-webkit-mask:radial-gradient(circle,transparent 69px,#000 70px);mask:radial-gradient(circle,transparent 69px,#000 70px)}
+.avatar::after{content:'';position:absolute;inset:10%;border-radius:50%;background:var(--green);filter:blur(50px);opacity:.35;z-index:-1}
+.avatar img{position:relative;width:100%;height:100%;border-radius:50%;object-fit:cover;background:var(--bg2);display:block;border:4px solid var(--bg)}
+body.is-live .avatar::before{background:conic-gradient(var(--live),transparent 40%,var(--live))}
+.live-tag{display:none;position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:var(--live);color:#fff;z-index:2;
+  font:700 11px var(--en);padding:3px 10px;border-radius:20px;letter-spacing:1px;border:3px solid var(--bg)}
+body.is-live .live-tag{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero .name{font-family:var(--en);font-size:clamp(40px,8vw,68px);font-weight:700;letter-spacing:-2px;line-height:1;direction:ltr;
+  background:linear-gradient(180deg,#fff 30%,#9aa0ac);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .handle{direction:ltr;font-family:var(--en);color:var(--muted);font-size:15px}
+.typed{direction:ltr;display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:30px;min-height:36px;
+  background:rgba(91,227,74,.08);border:1px solid rgba(91,227,74,.25);font:500 14px var(--en);color:var(--green2)}
+.typed::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.typed::after{content:'';width:1.5px;height:15px;background:var(--green2);animation:blink .9s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero .bio{color:#b4b8c2;max-width:520px;line-height:1.9;font-size:17px}
+
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:40px}
+.quick a{display:flex;flex-direction:column;gap:18px;padding:22px}
+.quick .qi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:20px;color:var(--green);
+  background:rgba(91,227,74,.1);border:1px solid rgba(91,227,74,.2)}
+.quick b{display:block;color:#fff;font-size:17px;font-weight:600}
+.quick span{font-size:13px;color:var(--muted)}
+.quick .arr{position:absolute;top:22px;left:22px;color:var(--muted);font-size:13px;transition:.3s}
+.quick a:hover .arr{color:var(--green);transform:translate(-3px,-3px)}
+
+/* عناوين فرعية */
+.sub-title{display:flex;align-items:center;gap:10px;margin:30px 4px 14px;font-size:15px;font-weight:600;color:var(--muted)}
+.sub-title:first-child{margin-top:0}
+.sub-title i{color:var(--green)}
+
+/* الحسابات */
+.socials{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.social{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.social .ic{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:14px;font-size:21px;color:#fff;
+  background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03));border:1px solid var(--border);transition:.35s}
+.social:hover .ic{background:linear-gradient(135deg,var(--green2),var(--green));color:#0e1013;border-color:transparent}
+.social .t{display:flex;flex-direction:column;min-width:0;gap:2px}
+.social .t b{font-size:16px;color:#fff;font-weight:600;font-family:var(--en)}
+.social .t span{direction:ltr;text-align:right;font-family:var(--en);font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.social .t span:empty{display:none}
+.social .go{margin-inline-start:auto;color:var(--muted);font-size:13px;transition:.3s}
+.social:hover .go{color:var(--green);transform:translate(-3px,-3px)}
+
+/* ديسكورد */
+.discord{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:44px 24px;max-width:560px;margin:0 auto}
+.discord .di{width:84px;height:84px;border-radius:26px;display:grid;place-items:center;font-size:40px;color:#fff;
+  background:linear-gradient(145deg,#6f7dff,#4752c4);box-shadow:0 14px 40px rgba(88,101,242,.4)}
+.discord b{font-size:26px;color:#fff;font-family:var(--en);font-weight:700}
+.discord .user{direction:ltr;font-family:var(--en);color:var(--muted);font-size:14px}
+.discord .user:empty{display:none}
+.discord p{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:40px;font-weight:600;margin-top:6px;
+  background:linear-gradient(135deg,var(--green2),var(--green));color:#0e1013;box-shadow:0 8px 28px rgba(91,227,74,.35);transition:.3s}
+.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 12px 36px rgba(91,227,74,.5)}
+
+/* البث */
+.stream-status{display:flex;align-items:center;gap:16px;padding:20px 22px;margin-bottom:14px}
+.stream-status .big{width:56px;height:56px;flex:none;border-radius:18px;display:grid;place-items:center;font-size:22px;
+  background:var(--card-h);color:var(--muted);border:1px solid var(--border)}
+.stream-status.live{border-color:rgba(255,59,92,.4)}
+.stream-status.live .big{background:var(--live);color:#fff;border-color:transparent;animation:pulse 1.6s infinite}
+.stream-status b{display:block;font-size:19px;color:#fff;font-weight:600}
+.stream-status span{font-size:14px;color:var(--muted)}
+.player{aspect-ratio:16/9;margin-bottom:14px;display:none}
+.player.on{display:block}
+.player iframe{width:100%;height:100%;border:0;display:block}
+
+/* شخصيات فايف ام */
+.chars{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.char{padding:0}
+.char .img{aspect-ratio:4/5;position:relative;overflow:hidden;background:var(--bg2)}
+.char .img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.char:hover .img img{transform:scale(1.07)}
+.char .img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(18,20,25,.96) 5%,transparent 55%)}
+.char .id{position:absolute;top:14px;left:14px;z-index:2;direction:ltr;font:600 12px var(--en);color:#fff;
+  background:rgba(18,20,25,.55);backdrop-filter:blur(8px);border:1px solid var(--border);padding:5px 11px;border-radius:30px}
+.char .info{position:absolute;bottom:0;right:0;left:0;z-index:2;padding:18px;direction:ltr;text-align:left}
+.char .info b{display:block;font:700 20px var(--en);color:#fff;letter-spacing:-.3px}
+.char .info span{display:inline-block;margin-top:8px;font:600 12px var(--en);color:#0e1013;background:var(--green);padding:3px 11px;border-radius:20px}
+.char .info small{display:block;font-size:12px;color:var(--muted);margin-top:6px}
+
+/* المودريترز */
+.mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.mod{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:26px 18px 20px}
+.mod .pic{position:relative;width:84px;height:84px;margin-bottom:4px}
+.mod .pic img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:var(--bg2);border:2px solid var(--border);transition:.35s}
+.mod:hover .pic img{border-color:var(--green)}
+.mod .pic i{position:absolute;bottom:-2px;right:-2px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font-size:12px;color:#0e1013;background:var(--green);border:3px solid var(--bg)}
+.mod.head .pic i{background:linear-gradient(135deg,#ffe28a,#f5b83d)}
+.mod b{font:700 18px var(--en);color:#fff;direction:ltr}
+.mod .role{font:600 12px var(--en);padding:4px 12px;border-radius:20px;color:var(--green2);background:rgba(91,227,74,.1);border:1px solid rgba(91,227,74,.25)}
+.mod.head .role{color:#ffd66e;background:rgba(245,184,61,.1);border-color:rgba(245,184,61,.3)}
+.mod .ml{display:flex;gap:8px;margin-top:6px}
+.mod .ml a{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:15px;color:var(--muted);
+  background:var(--card-h);border:1px solid var(--border);transition:.25s}
+.mod .ml a:hover{color:#0e1013;background:var(--green);border-color:transparent}
+.mods-empty{text-align:center;color:var(--muted);padding:30px}
+
+/* ===== اللعبة ===== */
+.game-wrap{max-width:520px;margin:0 auto}
+.game-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;direction:ltr}
+.game-bar .sc{display:flex;gap:10px}
+.game-bar .pill{padding:8px 16px;border-radius:30px;background:var(--card);border:1px solid var(--border);font:600 14px var(--en);color:var(--muted)}
+.game-bar .pill b{color:#fff;margin-left:6px}
+.game-bar .pill.best b{color:var(--green2)}
+.game-bar button{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--muted);transition:.25s}
+.game-bar button:hover{color:var(--green);border-color:rgba(91,227,74,.35)}
+.board{position:relative;padding:10px;touch-action:none}
+#snake{display:block;width:100%;aspect-ratio:1;border-radius:14px;background:#0f1115}
+.overlay{position:absolute;inset:10px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  text-align:center;background:rgba(15,17,21,.78);backdrop-filter:blur(6px);transition:opacity .3s}
+.overlay.hide{opacity:0;pointer-events:none}
+.overlay h3{font:700 32px var(--en);color:#fff;direction:ltr}
+.overlay p{color:var(--muted);font-size:14px;padding:0 20px}
+.dpad{display:none;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,58px);gap:8px;justify-content:center;margin-top:16px}
+.dpad button{border-radius:16px;background:var(--card);border:1px solid var(--border);font-size:20px;color:var(--text)}
+.dpad button:active{background:var(--green);color:#0e1013}
+.dpad .u{grid-column:2}.dpad .l{grid-column:1;grid-row:2}.dpad .d{grid-column:2;grid-row:2}.dpad .r{grid-column:3;grid-row:2}
+@media (hover:none){.dpad{display:grid}}
+
+/* ===== المعرض ===== */
+.up-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;margin-bottom:18px;cursor:pointer;
+  border:1.5px dashed rgba(91,227,74,.35);color:var(--green2);font-weight:600;border-radius:var(--r);background:rgba(91,227,74,.04);transition:.3s}
+.up-btn:hover,.up-btn.drag{background:rgba(91,227,74,.1);border-color:var(--green)}
+.up-btn input{display:none}
+.gallery{columns:3 240px;column-gap:14px}
+.gitem{break-inside:avoid;margin-bottom:14px;cursor:zoom-in}
+.gitem img{width:100%;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.gitem:hover img{transform:scale(1.04)}
+.gitem .cap{position:absolute;bottom:0;left:0;right:0;padding:30px 14px 12px;font-size:14px;color:#fff;
+  background:linear-gradient(to top,rgba(18,20,25,.9),transparent)}
+.gitem .cap:empty{display:none}
+.gitem .del{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(18,20,25,.7);
+  backdrop-filter:blur(6px);color:#fff;font-size:13px;opacity:0;transition:.25s;z-index:2}
+.gitem:hover .del{opacity:1}
+.gitem .del:hover{background:var(--live)}
+.g-empty{column-span:all;text-align:center;color:var(--muted);padding:40px 0}
+#lightbox{position:fixed;inset:0;z-index:90;background:rgba(10,11,14,.92);backdrop-filter:blur(10px);display:none;
+  align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+#lightbox.on{display:flex}
+#lightbox img{max-width:100%;max-height:90vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+
+/* ===== زر الموسيقى ===== */
+#music{position:fixed;bottom:18px;left:18px;z-index:60;display:none;align-items:center;gap:10px;padding:6px 14px 6px 6px;direction:ltr;
+  border-radius:40px;background:rgba(25,28,35,.75);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#music.on{display:flex}
+#music .mb{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));color:#0e1013;font-size:14px}
+#music .eq{display:flex;align-items:flex-end;gap:2px;height:16px}
+#music .eq i{width:3px;height:4px;background:var(--green);border-radius:2px}
+#music.playing .eq i{animation:eq .9s ease-in-out infinite}
+#music .eq i:nth-child(2){animation-delay:.2s}#music .eq i:nth-child(3){animation-delay:.4s}#music .eq i:nth-child(4){animation-delay:.1s}
+@keyframes eq{50%{height:16px}}
+#music input{width:70px;accent-color:var(--green)}
+#music .mt{font:500 12px var(--en);color:var(--muted);white-space:nowrap}
+#yt-holder{position:fixed;width:1px;height:1px;left:-9999px;top:0;opacity:0;pointer-events:none}
+
+footer{position:relative;z-index:2;text-align:center;padding:40px 16px;color:var(--muted);font:13px var(--en);direction:ltr}
+footer b{color:var(--text);font-weight:600}
+
+/* الجوال */
+@media (max-width:960px){
+  .burger{display:grid;place-items:center}
+  .nav{border-radius:26px}
+  .links{position:absolute;top:calc(100% + 8px);left:0;right:0;flex-direction:column;align-items:stretch;gap:4px;padding:10px;
+    background:rgba(25,28,35,.95);border:1px solid var(--border);border-radius:22px;backdrop-filter:blur(18px);display:none}
+  .links.open{display:flex}
+  .links a{padding:14px;text-align:center}
+}
+@media (max-width:520px){
+  .page-head{padding:44px 0 28px}
+  .hero{padding-top:48px}
+  .avatar{width:124px;height:124px}
+  .avatar::before{-webkit-mask:radial-gradient(circle,transparent 57px,#000 58px);mask:radial-gradient(circle,transparent 57px,#000 58px)}
+  .chars{grid-template-columns:repeat(2,1fr);gap:10px}
+  .mods{grid-template-columns:repeat(2,1fr);gap:10px}
+  .mod{padding:20px 10px 16px}
+  .mod .pic{width:70px;height:70px}
+  .mod b{font-size:15px}
+  .char .info{padding:12px}
+  .char .info b{font-size:15px}
+  .quick{grid-template-columns:1fr 1fr;gap:10px}
+  .quick a{padding:16px;gap:14px}
+  .quick .arr{top:16px;left:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}#intro-text span{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+
+<!-- شاشة البداية -->
+<div id="intro">
+  <div class="intro-wrap">
+    <div id="intro-text"></div>
+    <div class="intro-line"><i></i></div>
+  </div>
+</div>
+
+<!-- الخلفية -->
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div><div class="noise"></div></div>
+<div id="spot"></div>
+
+<header id="header">
+  <div id="live-bar"><span class="dot"></span><span id="live-text">أنا أبث الآن!</span><a id="live-link" target="_blank" rel="noopener">شاهد البث</a></div>
+  <nav class="nav">
+    <a class="brand" href="#home"><span class="logo" id="logo">&lt;/&gt;</span><b id="brand-name"></b></a>
+    <button class="burger" id="burger" aria-label="القائمة"><i class="fa-solid fa-bars"></i></button>
+    <div class="links" id="links">
+      <a href="#home">Home</a>
+      <a href="#accounts">Accounts</a>
+      <a href="#discord">Discord</a>
+      <a href="#stream"><span class="ldot"></span>Stream</a>
+      <a href="#mods">Mods</a>
+      <a href="#fivem">FiveM</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#game">Snake</a>
+    </div>
+  </nav>
+</header>
+
+<main id="app">
+
+  <!-- الرئيسية -->
+  <section class="page" id="page-home">
+    <div class="hero">
+      <div class="avatar rv"><img id="p-avatar" alt="الصورة الشخصية"><span class="live-tag">LIVE</span></div>
+      <h1 class="name rv" id="p-name"></h1>
+      <div class="handle rv" id="p-handle"></div>
+      <div class="typed rv" id="p-typed"></div>
+      <p class="bio rv" id="p-bio"></p>
+    </div>
+    <div class="quick">
+      <a class="card rv" href="#accounts"><i class="fa-solid fa-arrow-up-left arr"></i><div class="qi"><i class="fa-solid fa-at"></i></div><div><b>حساباتي</b><span>كل حساباتي بمكان واحد</span></div></a>
+      <a class="card rv" href="#discord"><i class="fa-solid fa-arrow-up-left arr"></i><div class="qi"><i class="fa-brands fa-discord"></i></div><div><b>ديسكورد</b><span>انضم للسيرفر</span></div></a>
+      <a class="card rv" href="#stream"><i class="fa-solid fa-arrow-up-left arr"></i><div class="qi"><i class="fa-solid fa-tower-broadcast"></i></div><div><b>البث</b><span id="q-stream">شوف إذا أنا لايف</span></div></a>
+      <a class="card rv" href="#fivem"><i class="fa-solid fa-arrow-up-left arr"></i><div class="qi"><i class="fa-solid fa-user-secret"></i></div><div><b>Characters</b><span>Characters FiveM</span></div></a>
+    </div>
+  </section>
+
+  <!-- الحسابات -->
+  <section class="page" id="page-accounts">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-at"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Accounts<em>.</em></h1>
+      <p class="rv">كل حساباتي في مكان واحد</p>
+    </div>
+    <div id="accounts-list" class="rv"></div>
+  </section>
+
+  <!-- ديسكورد -->
+  <section class="page" id="page-discord">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-brands fa-discord"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Discord<em>.</em></h1>
+    </div>
+    <div class="card discord rv">
+      <div class="di"><i class="fa-brands fa-discord"></i></div>
+      <b id="dc-name"></b>
+      <div class="user" id="dc-user"></div>
+      <p id="dc-desc"></p>
+      <a class="btn" id="dc-btn" target="_blank" rel="noopener"><i class="fa-solid fa-right-to-bracket"></i> انضم للسيرفر</a>
+    </div>
+  </section>
+
+  <!-- البث -->
+  <section class="page" id="page-stream">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-tower-broadcast"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Stream<em>.</em></h1>
+      <p class="rv">تابع بثي المباشر</p>
+    </div>
+    <div class="card stream-status rv" id="stream-status">
+      <div class="big"><i class="fa-solid fa-tower-broadcast"></i></div>
+      <div><b id="st-title">جاري التحقق...</b><span id="st-sub">نشيك إذا فيه بث شغال</span></div>
+    </div>
+    <div class="card player" id="player"></div>
+    <div class="socials rv" id="stream-links"></div>
+  </section>
+
+  <!-- المودريترز -->
+  <section class="page" id="page-mods">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Mods<em>.</em></h1>
+      <p class="rv">فريق الإشراف على البث</p>
+    </div>
+    <div class="mods rv" id="mods"></div>
+  </section>
+
+  <!-- فايف ام -->
+  <section class="page" id="page-fivem">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-user-secret"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">FiveM<em>.</em></h1>
+      <p class="rv">Characters FiveM</p>
+    </div>
+    <div class="chars rv" id="chars"></div>
+  </section>
+
+  <!-- المعرض -->
+  <section class="page" id="page-gallery">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-images"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Gallery<em>.</em></h1>
+      <p class="rv">صور ولقطات</p>
+    </div>
+    <label class="up-btn rv" id="up-btn"><i class="fa-solid fa-cloud-arrow-up"></i> ارفع صورة
+      <input type="file" id="up-input" accept="image/*" multiple></label>
+    <div class="gallery rv" id="gallery"></div>
+  </section>
+
+  <!-- اللعبة -->
+  <section class="page" id="page-game">
+    <div class="page-head">
+      <div class="icon rv"><i class="fa-solid fa-gamepad"></i></div>
+      <div class="tag rv"></div>
+      <h1 class="rv">Snake<em>.</em></h1>
+      <p class="rv">كُل النقاط الخضراء ولا تصدم بنفسك</p>
+    </div>
+    <div class="game-wrap rv">
+      <div class="game-bar">
+        <div class="sc"><span class="pill">Score<b id="g-score">0</b></span><span class="pill best">Best<b id="g-best">0</b></span></div>
+        <button id="g-pause" aria-label="إيقاف مؤقت"><i class="fa-solid fa-pause"></i></button>
+      </div>
+      <div class="card board">
+        <canvas id="snake" width="440" height="440"></canvas>
+        <div class="overlay" id="g-over">
+          <h3 id="g-title">Snake</h3>
+          <p id="g-msg">استخدم الأسهم أو WASD — وبالجوال اسحب بإصبعك</p>
+          <button class="btn" id="g-start"><i class="fa-solid fa-play"></i> ابدأ</button>
+        </div>
+      </div>
+      <div class="dpad">
+        <button class="u" data-d="up"><i class="fa-solid fa-chevron-up"></i></button>
+        <button class="l" data-d="left"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="d" data-d="down"><i class="fa-solid fa-chevron-down"></i></button>
+        <button class="r" data-d="right"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="lightbox"><img alt=""></div>
+
+<!-- مشغل الموسيقى -->
+<div id="music">
+  <button class="mb" id="m-btn" aria-label="تشغيل الموسيقى"><i class="fa-solid fa-play"></i></button>
+  <div class="eq"><i></i><i></i><i></i><i></i></div>
+  <span class="mt">Music</span>
+  <input type="range" id="m-vol" min="0" max="100" value="35" aria-label="الصوت">
+</div>
+<div id="yt-holder"><div id="yt"></div></div>
+
+<footer>© <span id="year"></span> <b id="f-name"></b> — All rights reserved</footer>
+
+<script>
+/* =========================================================
+   ✏️  عدّل معلوماتك هنا فقط
+   الصور: حطها في مجلد اسمه images جنب هذا الملف
+   ========================================================= */
+const PROFILE = {
+  name:     "Ab2dy",
+  brand:    "Ab2dy",                 // الاسم اللي يطلع فوق
+  logo:     "images/avatar.webp",    // صورة الشعار فوق — اتركه فاضي يطلع </>
+  tag:      "",                      // كلمة صغيرة فوق عنوان كل صفحة (اتركها فاضية تنخفي)
+  handle:   "@Ab2dy",
+  avatar:   "images/avatar.webp",
+  bio:      "السلام عليكم اسمي عبدالله",
+  typed:    ["Streamer", "FiveM Player"],
+
+  /* ---------- ديسكورد ---------- */
+  discord: {
+    server:  "Amigo's",
+    user:    "",
+    desc:    "سيرفر للسوالف والألعاب والبثوث",
+    invite:  "https://discord.gg/Zfd8jprCW8",
+  },
+
+  /* ---------- البث ----------
+     manualLive: لو الفحص التلقائي ما اشتغل خلها true وقت البث و false بعده */
+  stream: {
+    kick:   "Ab2dy",
+    twitch: "",
+    manualLive: false,
+  },
+
+  /* ---------- الحسابات مقسمة كاتوقريات ---------- */
+  socials: [
+    { category:"تواصل اجتماعي", icon:"fa-solid fa-comments", items:[
+      { name:"X",        user:"@xAb2dy", url:"https://x.com/xAb2dy",   icon:"fa-brands fa-x-twitter" },
+      { name:"WhatsApp", user:"Channel", url:"https://www.whatsapp.com/channel/0029Vajy8hQ2ZjCs85K37d3y", icon:"fa-brands fa-whatsapp" },
+      { name:"TikTok",   user:"@s2c",    url:"https://tiktok.com/@s2c", icon:"fa-brands fa-tiktok" },
+      { name:"Kick",     user:"Ab2dy",   url:"https://kick.com/Ab2dy",  icon:"fa-solid fa-k" },
+    ]},
+  ],
+
+  /* ---------- مودريترز البث ----------
+     head:true = هيد مود (تطلع له شارة ذهبية)
+     image: صورته في مجلد images (لو ما فيه صورة تطلع صورة افتراضية)
+     links: حط اللي عنده واحذف الباقي (kick / x / tiktok / discord) */
+  mods: [
+    { name:"Alghamdiz", role:"Moderator", image:"images/mod1.png", },
+    { name:"Awash", role:"Moderator", image:"images/mod2.png", },
+    { name:"HMD", role:"Moderator", image:"images/mod3.png", },
+    { name:"Reem_qx", role:"Moderator", image:"images/mod4.png", },
+    { name:"𝑱𝒂𝒏𝒂", role:"Moderator", image:"images/mod5.png", },
+    { name:"A7MEDO", role:"Moderator", image:"images/mod6.png", },
+    { name:"! 𝑭𝒂𝒕𝒊𝒎𝒂", role:"Moderator", image:"images/mod7.png", },
+    { name:"Elan", role:"Moderator", image:"images/mod8.png", },
+  ],
+
+  /* ---------- أغنية الخلفية ----------
+     حط رابط أي فيديو من اليوتيوب (اتركه فاضي "" لو ما تبي موسيقى)
+     الأغنية تشتغل أول ما الزائر يضغط أي مكان بالموقع (المتصفحات تمنع التشغيل التلقائي بالصوت) */
+  music: {
+    youtube: "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+    volume:  35,
+  },
+
+  /* ---------- المعرض ----------
+     الصور اللي تبي الكل يشوفها: حطها في مجلد images واكتبها هنا */
+  gallery: [
+    // { src:"images/g1.jpg", title:"وصف الصورة" },
+  ],
+
+  /* ---------- شخصيات فايف ام ---------- */
+  characters: [
+    { name:"Abdullah Abdulaziz", role:"AII",      image:"images/char1.png" },
+    { name:"Abu Jizan",          role:"Criminal", image:"images/char2.png" },
+    { name:"Rabeh Saqer",        role:"Officer",  image:"images/char3.png" },
+  ],
+};
+/* ========================================================= */
+
+const $ = id => document.getElementById(id);
+const FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent(
+ `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'><rect width='400' height='500' fill='#191c23'/>
+  <circle cx='200' cy='190' r='70' fill='#23262f'/><path d='M80 440c14-80 64-120 120-120s106 40 120 120' fill='#23262f'/></svg>`);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const card = s => `
+  <a class="card social" href="${esc(s.url)}" target="_blank" rel="noopener">
+    <div class="ic"><i class="${esc(s.icon)}"></i></div>
+    <div class="t"><b>${esc(s.name)}</b><span>${esc(s.user)}</span></div>
+    <i class="fa-solid fa-arrow-up-left go"></i>
+  </a>`;
+
+/* تعبئة الصفحة */
+function render(){
+  const av = $('p-avatar');
+  av.src = PROFILE.avatar; av.onerror = () => { av.onerror = null; av.src = FALLBACK; };
+  if(PROFILE.logo) $('logo').innerHTML = `<img src="${esc(PROFILE.logo)}" alt="">`;
+  $('brand-name').textContent = PROFILE.brand;
+  document.querySelectorAll('.page-head .tag').forEach(t => t.textContent = PROFILE.tag.trim());
+  $('p-name').textContent = PROFILE.name.trim();
+  $('p-handle').textContent = PROFILE.handle;
+  $('p-bio').textContent = PROFILE.bio;
+  $('f-name').textContent = PROFILE.brand;
+  $('year').textContent = new Date().getFullYear();
+
+  $('accounts-list').innerHTML = PROFILE.socials.map(g => `
+    <h3 class="sub-title"><i class="${esc(g.icon)}"></i> ${esc(g.category)}</h3>
+    <div class="socials">${g.items.map(card).join('')}</div>`).join('');
+
+  const d = PROFILE.discord;
+  $('dc-name').textContent = (d.server||'').trim(); $('dc-user').textContent = d.user || '';
+  $('dc-desc').textContent = d.desc;   $('dc-btn').href = d.invite;
+
+  const st = PROFILE.stream, links = [];
+  if(st.kick)   links.push({ name:"Kick",   user:st.kick,   url:`https://kick.com/${st.kick}`,    icon:"fa-solid fa-k" });
+  if(st.twitch) links.push({ name:"Twitch", user:st.twitch, url:`https://twitch.tv/${st.twitch}`, icon:"fa-brands fa-twitch" });
+  $('stream-links').innerHTML = links.map(card).join('');
+
+  const ICONS = { kick:"fa-solid fa-k", x:"fa-brands fa-x-twitter", tiktok:"fa-brands fa-tiktok",
+    discord:"fa-brands fa-discord", instagram:"fa-brands fa-instagram", snapchat:"fa-brands fa-snapchat", youtube:"fa-brands fa-youtube" };
+  const AV = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='#23262f'/><circle cx='50' cy='40' r='17' fill='#3a3e4a'/><path d='M18 92c4-20 17-30 32-30s28 10 32 30' fill='#3a3e4a'/></svg>`);
+  window.MOD_AV = AV;
+  $('mods').innerHTML = (PROFILE.mods || []).length ? PROFILE.mods.map(m => `
+    <div class="card hover mod${m.head ? ' head' : ''}">
+      <div class="pic"><img src="${esc(m.image || AV)}" alt="${esc(m.name)}" loading="lazy" onerror="this.onerror=null;this.src=MOD_AV">
+        <i class="fa-solid ${m.head ? 'fa-crown' : 'fa-shield-halved'}"></i></div>
+      <b>${esc(m.name)}</b>
+      <span class="role">${esc(m.role)}</span>
+      <div class="ml">${Object.entries(m.links || {}).map(([k,u]) =>
+        `<a href="${esc(u)}" target="_blank" rel="noopener" aria-label="${esc(k)}"><i class="${ICONS[k] || 'fa-solid fa-link'}"></i></a>`).join('')}</div>
+    </div>`).join('') : '<div class="mods-empty">لا يوجد مودريترز حاليًا</div>';
+
+  $('chars').innerHTML = PROFILE.characters.map((c,i) => `
+    <div class="card hover char">
+      <div class="img">
+        <span class="id">#${String(i+1).padStart(2,'0')}</span>
+        <img src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy" onerror="this.onerror=null;this.src=FALLBACK">
+      </div>
+      <div class="info"><b>${esc(c.name)}</b><span>${esc(c.role)}</span>${c.server?`<small>${esc(c.server)}</small>`:''}</div>
+    </div>`).join('');
+}
+
+/* التنقل بين الصفحات */
+const PAGES = ['home','accounts','discord','stream','mods','fivem','gallery','game'];
+function route(){
+  const p = PAGES.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'page-' + p));
+  document.querySelectorAll('#links a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + p));
+  $('links').classList.remove('open');
+  scrollTo({ top:0, behavior:'smooth' });
+}
+addEventListener('hashchange', route);
+$('burger').addEventListener('click', () => $('links').classList.toggle('open'));
+
+/* إضاءة تتبع الماوس */
+addEventListener('pointermove', e => {
+  document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+  document.documentElement.style.setProperty('--my', e.clientY + 'px');
+  const c = e.target.closest && e.target.closest('.card');
+  if(c){ const r = c.getBoundingClientRect(); c.style.setProperty('--x', (e.clientX-r.left)+'px'); c.style.setProperty('--y', (e.clientY-r.top)+'px'); }
+});
+
+/* ===== فحص البث المباشر ===== */
+async function checkKick(u){
+  const r = await fetch(`https://kick.com/api/v2/channels/${encodeURIComponent(u)}`);
+  if(!r.ok) throw 0;
+  const j = await r.json();
+  return j.livestream ? { platform:"Kick", url:`https://kick.com/${u}`, title:j.livestream.session_title,
+    viewers:j.livestream.viewer_count, embed:`https://player.kick.com/${u}` } : null;
+}
+async function checkTwitch(u){
+  const r = await fetch(`https://decapi.me/twitch/uptime/${encodeURIComponent(u)}`);
+  if(!r.ok) throw 0;
+  const t = (await r.text()).toLowerCase();
+  if(t.includes('offline') || t.includes('error') || t.includes('not found')) return null;
+  return { platform:"Twitch", url:`https://twitch.tv/${u}`, title:"", viewers:null,
+    embed:`https://player.twitch.tv/?channel=${u}&parent=${location.hostname || 'localhost'}&muted=true` };
+}
+let currentEmbed = null;
+function setLive(info){
+  document.body.classList.toggle('is-live', !!info);
+  $('live-bar').classList.toggle('on', !!info);
+  $('stream-status').classList.toggle('live', !!info);
+  const player = $('player');
+  if(info){
+    $('live-text').textContent = `أنا أبث الآن على ${info.platform}!`;
+    $('live-link').href = info.url;
+    $('q-stream').textContent = '🔴 مباشر الآن';
+    $('st-title').textContent = `مباشر الآن على ${info.platform}`;
+    $('st-sub').textContent = [info.title, info.viewers != null ? `${info.viewers} مشاهد` : ''].filter(Boolean).join(' • ') || 'تعال شاركنا البث';
+    if(info.embed && currentEmbed !== info.embed){
+      currentEmbed = info.embed;
+      player.innerHTML = `<iframe src="${esc(info.embed)}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+    }
+    player.classList.add('on');
+  } else {
+    $('q-stream').textContent = 'غير متصل حاليًا';
+    $('st-title').textContent = 'غير متصل حاليًا';
+    $('st-sub').textContent = 'تابعني عشان يوصلك تنبيه أول ما أفتح بث';
+    player.classList.remove('on'); player.innerHTML = ''; currentEmbed = null;
+  }
+}
+async function checkLive(){
+  const st = PROFILE.stream, checks = [];
+  if(st.kick) checks.push(checkKick(st.kick).catch(() => null));
+  if(st.twitch) checks.push(checkTwitch(st.twitch).catch(() => null));
+  let info = (await Promise.all(checks)).find(Boolean) || null;
+  if(!info && st.manualLive){
+    const k = !!st.kick, u = st.kick || st.twitch;
+    info = { platform: k ? "Kick" : "Twitch", url: k ? `https://kick.com/${u}` : `https://twitch.tv/${u}`, title:"", viewers:null,
+      embed: k ? `https://player.kick.com/${u}` : `https://player.twitch.tv/?channel=${u}&parent=${location.hostname || 'localhost'}&muted=true` };
+  }
+  setLive(info);
+}
+
+/* كتابة متحركة تحت الاسم */
+function typeLoop(){
+  const el = $('p-typed'), list = PROFILE.typed;
+  const txt = document.createElement('span'); el.appendChild(txt);
+  let w = 0, i = 0, del = false;
+  (function tick(){
+    const word = list[w];
+    txt.textContent = word.slice(0, i);
+    if(!del && i < word.length){ i++; setTimeout(tick, 75); }
+    else if(!del){ del = true; setTimeout(tick, 1600); }
+    else if(i > 0){ i--; setTimeout(tick, 40); }
+    else { del = false; w = (w+1) % list.length; setTimeout(tick, 300); }
+  })();
+}
+
+/* شاشة البداية: CODING </> */
+function intro(){
+  const box = $('intro-text');
+  box.innerHTML = [..."CODING </>"].map((ch,k) =>
+    `<span class="${ch===' ' ? 'sp' : (k > 6 ? 'g' : '')}" style="animation-delay:${k*.07}s">${ch===' ' ? '' : esc(ch)}</span>`).join('');
+  setTimeout(() => {
+    $('intro').classList.add('hide');
+    $('app').classList.add('show');
+    $('header').classList.add('show');
+    typeLoop();
+  }, 3000);
+}
+
+/* ============ المعرض ============ */
+const Gallery = (() => {
+  let db = null;
+  const open = () => new Promise(res => {
+    try{
+      const r = indexedDB.open('ab2dy-gallery', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('imgs', { keyPath:'id', autoIncrement:true });
+      r.onsuccess = () => { db = r.result; res(); };
+      r.onerror = () => res();
+    }catch(e){ res(); }
+  });
+  const tx = (mode, fn) => new Promise(res => {
+    if(!db) return res([]);
+    const t = db.transaction('imgs', mode), st = t.objectStore('imgs'), out = fn(st);
+    t.oncomplete = () => res(out && out.result); t.onerror = () => res([]);
+  });
+  const urls = [];
+  async function draw(){
+    urls.forEach(u => URL.revokeObjectURL(u)); urls.length = 0;
+    const local = (await tx('readonly', st => st.getAll())) || [];
+    const items = [
+      ...local.slice().reverse().map(x => { const u = URL.createObjectURL(x.blob); urls.push(u); return { src:u, id:x.id }; }),
+      ...(PROFILE.gallery || []).map(g => ({ src:g.src, title:g.title })),
+    ];
+    $('gallery').innerHTML = items.length ? items.map(it => `
+      <div class="card gitem" data-src="${esc(it.src)}">
+        ${it.id ? `<button class="del" data-id="${it.id}" aria-label="حذف"><i class="fa-solid fa-trash"></i></button>` : ''}
+        <img src="${esc(it.src)}" alt="${esc(it.title || '')}" loading="lazy">
+        <div class="cap">${esc(it.title || '')}</div>
+      </div>`).join('') : '<div class="g-empty">ما فيه صور للحين — ارفع أول صورة</div>';
+  }
+  async function add(files){
+    for(const f of files){ if(f.type.startsWith('image/')) await tx('readwrite', st => st.add({ blob:f, t:Date.now() })); }
+    draw();
+  }
+  async function init(){
+    await open(); draw();
+    $('up-input').addEventListener('change', e => { add([...e.target.files]); e.target.value = ''; });
+    const b = $('up-btn');
+    ['dragenter','dragover'].forEach(ev => b.addEventListener(ev, e => { e.preventDefault(); b.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(ev => b.addEventListener(ev, e => { e.preventDefault(); b.classList.remove('drag'); }));
+    b.addEventListener('drop', e => add([...e.dataTransfer.files]));
+    document.addEventListener('click', async e => {
+      const del = e.target.closest('.gitem .del');
+      if(del){ e.stopPropagation(); await tx('readwrite', st => st.delete(+del.dataset.id)); return draw(); }
+      const it = e.target.closest('.gitem');
+      if(it){ $('lightbox').querySelector('img').src = it.dataset.src; $('lightbox').classList.add('on'); }
+    });
+    $('lightbox').addEventListener('click', () => $('lightbox').classList.remove('on'));
+    addEventListener('keydown', e => { if(e.key === 'Escape') $('lightbox').classList.remove('on'); });
+  }
+  return { init };
+})();
+
+/* ============ لعبة الدودة ============ */
+const Snake = (() => {
+  const cv = $('snake'), ctx = cv.getContext('2d'), N = 20, S = cv.width / N;
+  let snake, dir, next, food, score, best = 0, timer = null, speed, state = 'idle';
+  try{ best = +localStorage.getItem('ab2dy-snake-best') || 0; }catch(e){}
+  $('g-best').textContent = best;
+  const DIRS = { up:[0,-1], down:[0,1], left:[-1,0], right:[1,0] };
+  const OPP = { up:'down', down:'up', left:'right', right:'left' };
+
+  function place(){
+    do{ food = [Math.random()*N|0, Math.random()*N|0]; } while(snake.some(p => p[0]===food[0] && p[1]===food[1]));
+  }
+  function reset(){
+    snake = [[9,10],[8,10],[7,10]]; dir = next = 'right'; score = 0; speed = 120;
+    $('g-score').textContent = 0; place();
+  }
+  function rr(x,y,w,h,r){ ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x,y,w,h,r) : ctx.rect(x,y,w,h); ctx.fill(); }
+  function draw(){
+    ctx.fillStyle = '#0f1115'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle = 'rgba(255,255,255,.035)';
+    for(let x=0;x<N;x++) for(let y=0;y<N;y++) if((x+y)%2) ctx.fillRect(x*S,y*S,S,S);
+    // الأكل
+    ctx.shadowColor = '#5be34a'; ctx.shadowBlur = 18; ctx.fillStyle = '#a6ff8f';
+    ctx.beginPath(); ctx.arc(food[0]*S+S/2, food[1]*S+S/2, S*.32, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
+    // الدودة
+    snake.forEach((p,i) => {
+      const t = 1 - i / (snake.length + 4);
+      ctx.fillStyle = i ? `rgba(91,227,74,${.35 + .65*t})` : '#c3c7d0';
+      rr(p[0]*S+1.5, p[1]*S+1.5, S-3, S-3, i ? 5 : 7);
+    });
+    // العيون
+    const h = snake[0], [dx,dy] = DIRS[dir];
+    ctx.fillStyle = '#0f1115';
+    [[-1,1],[1,1]].forEach(([a]) => {
+      const ex = h[0]*S+S/2 + dx*S*.18 + (dy ? a*S*.18 : 0), ey = h[1]*S+S/2 + dy*S*.18 + (dx ? a*S*.18 : 0);
+      ctx.beginPath(); ctx.arc(ex, ey, S*.09, 0, Math.PI*2); ctx.fill();
+    });
+  }
+  function step(){
+    dir = next;
+    const [dx,dy] = DIRS[dir], h = [snake[0][0]+dx, snake[0][1]+dy];
+    if(h[0]<0 || h[1]<0 || h[0]>=N || h[1]>=N || snake.some(p => p[0]===h[0] && p[1]===h[1])) return over();
+    snake.unshift(h);
+    if(h[0]===food[0] && h[1]===food[1]){
+      score++; $('g-score').textContent = score; place();
+      if(speed > 60){ speed -= 3; clearInterval(timer); timer = setInterval(step, speed); }
+    } else snake.pop();
+    draw();
+  }
+  function start(){
+    if(state === 'over' || state === 'idle') reset();
+    state = 'run'; $('g-over').classList.add('hide');
+    $('g-pause').innerHTML = '<i class="fa-solid fa-pause"></i>';
+    clearInterval(timer); timer = setInterval(step, speed); draw();
+  }
+  function pause(){
+    if(state !== 'run') return;
+    state = 'pause'; clearInterval(timer);
+    $('g-title').textContent = 'Paused'; $('g-msg').textContent = 'اضغط استمر عشان تكمل';
+    $('g-start').innerHTML = '<i class="fa-solid fa-play"></i> استمر';
+    $('g-pause').innerHTML = '<i class="fa-solid fa-play"></i>';
+    $('g-over').classList.remove('hide');
+  }
+  function over(){
+    state = 'over'; clearInterval(timer);
+    if(score > best){ best = score; $('g-best').textContent = best; try{ localStorage.setItem('ab2dy-snake-best', best); }catch(e){} }
+    $('g-title').textContent = 'Game Over'; $('g-msg').textContent = `نتيجتك: ${score} — أفضل نتيجة: ${best}`;
+    $('g-start').innerHTML = '<i class="fa-solid fa-rotate-right"></i> العب مرة ثانية';
+    $('g-over').classList.remove('hide');
+  }
+  function turn(d){
+    if(state !== 'run') return;
+    if(d !== OPP[dir]) next = d;
+  }
+  function init(){
+    reset(); draw();
+    $('g-start').addEventListener('click', start);
+    $('g-pause').addEventListener('click', () => state === 'run' ? pause() : (state === 'pause' && start()));
+    document.querySelectorAll('.dpad button').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); turn(b.dataset.d); }));
+    const KEYS = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right', w:'up', s:'down', a:'left', d:'right', W:'up', S:'down', A:'left', D:'right' };
+    addEventListener('keydown', e => {
+      if(!$('page-game').classList.contains('active')) return;
+      if(KEYS[e.key]){ e.preventDefault(); if(state === 'idle' || state === 'over') start(); turn(KEYS[e.key]); }
+      if(e.key === ' '){ e.preventDefault(); state === 'run' ? pause() : start(); }
+    });
+    let sx, sy;
+    cv.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive:true });
+    cv.addEventListener('touchmove', e => e.preventDefault(), { passive:false });
+    cv.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if(Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+      turn(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+    });
+    addEventListener('hashchange', () => { if(location.hash !== '#game') pause(); });
+  }
+  return { init };
+})();
+
+/* ============ موسيقى الخلفية من اليوتيوب ============ */
+const Music = (() => {
+  let player = null, ready = false, playing = false, wanted = false;
+  function ytId(u){
+    const m = String(u || '').match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/);
+    return m ? m[1] : (/^[\w-]{11}$/.test(u) ? u : null);
+  }
+  function setUI(p){
+    playing = p; $('music').classList.toggle('playing', p);
+    $('m-btn').innerHTML = `<i class="fa-solid fa-${p ? 'pause' : 'play'}"></i>`;
+  }
+  function play(){ wanted = true; if(ready){ player.playVideo(); } }
+  function pause(){ wanted = false; if(ready){ player.pauseVideo(); } }
+  function init(){
+    const id = ytId(PROFILE.music && PROFILE.music.youtube);
+    if(!id || id === 'XXXXXXXXXXX') return;
+    $('music').classList.add('on');
+    let vol = PROFILE.music.volume ?? 35;
+    try{ const v = localStorage.getItem('ab2dy-vol'); if(v !== null) vol = +v; }catch(e){}
+    $('m-vol').value = vol;
+    window.onYouTubeIframeAPIReady = () => {
+      player = new YT.Player('yt', {
+        videoId:id, width:1, height:1,
+        playerVars:{ autoplay:0, controls:0, loop:1, playlist:id, playsinline:1, rel:0 },
+        events:{
+          onReady: () => { ready = true; player.setVolume(+$('m-vol').value); if(wanted) player.playVideo(); },
+          onStateChange: e => { if(e.data === 1) setUI(true); else if(e.data === 2 || e.data === 0) setUI(false);
+            if(e.data === 0) player.playVideo(); },
+        },
+      });
+    };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
+    $('m-btn').addEventListener('click', e => { e.stopPropagation(); playing ? pause() : play(); });
+    $('m-vol').addEventListener('input', e => {
+      if(ready) player.setVolume(+e.target.value);
+      try{ localStorage.setItem('ab2dy-vol', e.target.value); }catch(err){}
+    });
+    // تشغيل مع أول ضغطة من الزائر
+    const first = e => {
+      if(e.target.closest && e.target.closest('#music')) return;
+      play(); ['pointerdown','keydown'].forEach(ev => removeEventListener(ev, first, true));
+    };
+    ['pointerdown','keydown'].forEach(ev => addEventListener(ev, first, true));
+  }
+  return { init };
+})();
+
+render(); route(); intro();
+Gallery.init(); Snake.init(); Music.init();
+checkLive(); setInterval(checkLive, 60000);
+</script>
+</body>
+</html>
